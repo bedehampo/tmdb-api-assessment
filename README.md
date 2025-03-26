@@ -20,5 +20,5 @@ The app currently responds with a basic endpoint (`GET /`) to verify MongoDB con
 ### Running the Project
 1. Clone the repository:
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/bedehampo/tmdb-api-assessment.git
    cd tmdb-api-assessment
