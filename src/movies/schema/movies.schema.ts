@@ -15,7 +15,7 @@ export class Movie extends Document {
   @Prop()
   release_date: Date;
 
-  @Prop([{ id: Number, name: String }])
+  @Prop([{ id: { type: Number, required: true }, name: { type: String } }])
   genres: { id: number; name: string }[];
 }
 

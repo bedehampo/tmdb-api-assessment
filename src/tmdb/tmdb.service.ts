@@ -13,13 +13,26 @@ export class TmdbService {
   }
 
   // Fetch Popular movies
-  async fetchPopularMovies(page: number = 1): Promise<any[]> {
+  async fetchPopularMovies(page: number = 3): Promise<any[]> {
     try {
       const response = await axios.get(`${this.baseUrl}/movie/popular`, {
         params: { api_key: this.apiKey, page },
       });
-      //   console.log('TMDB Response:', response.data);
+      //   console.log('Response:', response.data);
       return response.data.results || [];
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Fetch Genre's
+  async fetchGenreList(): Promise<{ id: number; name: string }[]> {
+    try {
+      const response = await axios.get(`${this.baseUrl}/genre/movie/list`, {
+        params: { api_key: this.apiKey },
+      });
+      // console.log("Response", response)
+      return response.data.genres || [];
     } catch (error) {
       throw error;
     }

@@ -3,15 +3,20 @@ import { Movie } from './schema/movies.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { TmdbService } from 'src/tmdb/tmdb.service';
 import { Model } from 'mongoose';
+import { Genre } from './schema/genre.schema';
+import { GetMoviesDto } from './dto/get-movies-dto';
+import { query } from '../../node_modules/@types/express/index.d';
 
 @Injectable()
 export class MoviesService implements OnModuleInit {
   constructor(
     @InjectModel(Movie.name) private movieModel: Model<Movie>,
+    @InjectModel(Genre.name) private genreModel: Model<Genre>,
     private tmdbService: TmdbService,
   ) {}
   async onModuleInit() {
     await this.populateDBWithMovies();
+    await this.populateDbWithGenre();
   }
 
   // Populate the Db with movies data
@@ -53,15 +58,69 @@ export class MoviesService implements OnModuleInit {
     }
   }
 
+  // Populate the Db with genre data
+  async populateDbWithGenre() {
+    try {
+      // Get genre qty
+      const existingCount = await this.genreModel.countDocuments();
+      if (existingCount > 0) return;
+
+      //Fetch the genre data from tmdb
+      const genres = await this.tmdbService.fetchGenreList();
+      if (!genres || genres.length === 0) {
+        console.warn('No genres fetched from TMDB');
+        return;
+      }
+
+      // Format genre data
+      const genreDocs = genres.map((genre) => ({
+        id: genre.id,
+        name: genre.name,
+      }));
+
+      // Insert into my local db
+      await this.genreModel.insertMany(genreDocs, { ordered: false });
+      console.log(`Synced ${genreDocs.length} genres`);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Get Genres
+
   // Get movies
   async getMovies(
-    page: number = 1,
-    limit: number = 10,
+    dto: GetMoviesDto,
   ): Promise<{ message: string; data: Movie[] }> {
+    const { page, limit, search, genre, year } = dto;
     try {
+      const query: any = {};
+
+      // Search by keyword (title or overview)
+      if (search) {
+        query.$or = [
+          { title: { $regex: new RegExp(search, 'i') } },
+          { overview: { $regex: new RegExp(search, 'i') } },
+        ];
+      }
+
+      // Filter by genre
+      if (genre !== undefined) {
+        query['genres.id'] = genre;
+      }
+
+      // Filter by year release
+      if (year) {
+        const formattedYear = new Date(year).getFullYear();
+        const startOfYear = new Date(`${formattedYear}-01-01T00:00:00.000Z`);
+        const endOfYear = new Date(`${formattedYear}-12-31T23:59:59.999Z`);
+
+        // Filtering for the entire year
+        query.release_date = { $gte: startOfYear, $lte: endOfYear };
+      }
       //   retrieve the fetched movies from my db
       const movies = await this.movieModel
-        .find()
+        .find(query)
         .skip((page - 1) * limit)
         .limit(limit);
 
