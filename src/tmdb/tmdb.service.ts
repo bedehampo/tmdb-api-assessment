@@ -13,11 +13,21 @@ export class TmdbService {
   }
 
   // Fetch Popular movies
-  async fetchPopularMovies(page: number = 3): Promise<any[]> {
+  async fetchPopularMovies(page: number = 1): Promise<any[]> {
     try {
       const response = await axios.get(`${this.baseUrl}/movie/popular`, {
         params: { api_key: this.apiKey, page },
       });
+
+      // If the response contains an invalid page status, stop fetching
+      if (
+        response.data.status_message &&
+        response.data.status_message.includes('Invalid page')
+      ) {
+        console.log('Reached invalid page. Stopping fetch process.');
+        // Return an empty array to stop further processing
+        return [];
+      }
       //   console.log('Response:', response.data);
       return response.data.results || [];
     } catch (error) {
