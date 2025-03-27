@@ -18,7 +18,8 @@ export class TmdbService {
       const response = await axios.get(`${this.baseUrl}/movie/popular`, {
         params: { api_key: this.apiKey, page },
       });
-      return response.data.result;
+      //   console.log('TMDB Response:', response.data);
+      return response.data.results || [];
     } catch (error) {
       throw error;
     }

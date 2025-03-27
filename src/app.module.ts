@@ -12,10 +12,11 @@ import { MoviesModule } from './movies/movies.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: `mongodb://${configService.get('DATABASE_USER')}:${configService.get('DATABASE_PASSWORD')}@${configService.get('DATABASE_HOST')}:${configService.get('DATABASE_PORT')}/admin`,
+        // uri: `mongodb://${configService.get('DATABASE_USER')}:${configService.get('DATABASE_PASSWORD')}@${configService.get('DATABASE_HOST')}:${configService.get('DATABASE_PORT')}/admin`,
+        uri: `mongodb://${configService.get('DATABASE_HOST')}:${configService.get('DATABASE_PORT')}/${configService.get('DATABASE_NAME')}`,
         retryAttempts: 10,
         retryDelay: 1000,
-        dbName: configService.get('DATABASE_NAME'),
+        // dbName: configService.get('DATABASE_NAME'),
       }),
       inject: [ConfigService],
     }),
