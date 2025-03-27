@@ -2,21 +2,12 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
-export class Movie extends Document {
+export class Genre extends Document {
   @Prop({ required: true, unique: true })
-  movieId: number;
+  id: number;
 
   @Prop({ required: true })
-  title: string;
-
-  @Prop()
-  overview: string;
-
-  @Prop()
-  release_date: Date;
-
-  @Prop([Number])
-  genres: number[];
+  name: string;
 }
 
-export const MovieSchema = SchemaFactory.createForClass(Movie);
+export const GenreSchema = SchemaFactory.createForClass(Genre);

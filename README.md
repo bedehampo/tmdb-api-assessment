@@ -20,7 +20,7 @@ The app currently responds with a basic endpoint (`GET /`) to verify MongoDB con
 ### Running the Project
 1. Clone the repository:
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/bedehampo/tmdb-api-assessment.git
    cd tmdb-api-assessment
 
 ## Features
@@ -45,3 +45,15 @@ The app currently responds with a basic endpoint (`GET /`) to verify MongoDB con
     - Flexible `genres` array supports future expansion (e.g., adding genre names).
     - Timestamps enable tracking of data updates.
   - **Adaptability**: Schema can be extended with additional TMDB fields (e.g., `poster_path`, `vote_average`) without breaking existing functionality.
+
+### Endpoint Updates
+- **Overview**: Provides endpoints to interact with the stored movie data, enhanced with search and filtering capabilities.
+- **Implementation**: 
+- GET /movies: Retrieves a list of movies with optional search and filtering.
+- **Query Parameters**:
+- search (String): Filters movies by title (case-insensitive partial match).
+- genre (Number): Filters movies by a specific genre ID.
+- year (Number): Filters movies by release year.
+
+- Example: GET `GET /movies?search=interstellar&genre=18&release_year=2014`
+- search (String): Filters movies by title (case-insensitive partial match).
