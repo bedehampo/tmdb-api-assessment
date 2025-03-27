@@ -2,7 +2,9 @@
   "cSpell.words": [
     "INITDB",
     "mongodata",
+    "nonexistentuser",
     "technicalassessmentsecretkey",
+    "testuser",
     "tmdb"
   ]
 }
