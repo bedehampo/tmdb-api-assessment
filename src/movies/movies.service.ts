@@ -17,13 +17,17 @@ export class MoviesService implements OnModuleInit {
   // Populate the Db with movies data
   async populateDBWithMovies() {
     try {
+      // Get all the movies of tmdb
       const movies = await this.tmdbService.fetchPopularMovies();
-      console.log('Fetched Movies:', movies);
+      //   console.log('Fetched Movies:', movies);
+      // confirm movies data fetched
       if (!movies || !Array.isArray(movies)) {
         console.warn('No valid movies data returned');
         return;
       }
-      console.log('Number of movies fetched:', movies.length); // Confirm count
+      //   console.log('Number of movies fetched:', movies.length);
+
+      // format the movies data
       const movieDocs = movies.map((movie) => ({
         movieId: movie.id,
         title: movie.title,
@@ -31,8 +35,10 @@ export class MoviesService implements OnModuleInit {
         release_date: movie.release_date,
         genres: movie.genre_ids.map((id) => ({ id })),
       }));
-      console.log('Movie Docs to Insert:', movieDocs); // Log formatted docs
-      const result = await this.movieModel
+      //   console.log('Movie Docs to Insert:', movieDocs);
+
+      // insert the movie data into the db
+      await this.movieModel
         .insertMany(movieDocs, { ordered: false })
         .catch((err) => {
           if (err.code === 11000) {
@@ -41,7 +47,7 @@ export class MoviesService implements OnModuleInit {
           }
           throw err;
         });
-      console.log('Inserted Docs:', result);
+      //   console.log('Inserted Docs:', result);
     } catch (error) {
       throw error;
     }
@@ -53,12 +59,14 @@ export class MoviesService implements OnModuleInit {
     limit: number = 10,
   ): Promise<{ message: string; data: Movie[] }> {
     try {
+      //   retrieve the fetched movies from my db
       const movies = await this.movieModel
         .find()
         .skip((page - 1) * limit)
         .limit(limit);
+
       return {
-        message: '',
+        message: 'Movies fetched successfully',
         data: movies as unknown as Movie[],
       };
     } catch (error) {
