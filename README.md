@@ -66,5 +66,6 @@ The app currently responds with a basic endpoint (`GET /`) to verify MongoDB con
   - Passwords are hashed with `bcrypt` for security.
   - JWT tokens are issued via the `/auth/login` endpoint and required for protected routes, secured with `@nestjs/passport` and `passport-jwt`.
   - **Login Example**:
-  Example: POST `POST /user/login`
+  Example: `POST /user/login`, `GET /movies/genre`, `GET /movies/:id` `POST /movies/rate-movie` `GET /movies/rating/:id`
+
    

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
 export class Movie extends Document {
@@ -17,6 +17,12 @@ export class Movie extends Document {
 
   @Prop([Number])
   genres: number[];
+
+  @Prop({ type: [Types.ObjectId], ref: 'Rating', required: true })
+  ratings: Types.ObjectId[];
+
+  @Prop({ default: 0 })
+  avgRating: number;
 }
 
 export const MovieSchema = SchemaFactory.createForClass(Movie);
