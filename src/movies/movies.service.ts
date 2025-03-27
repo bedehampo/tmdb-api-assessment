@@ -7,6 +7,7 @@ import { Genre } from './schema/genre.schema';
 import { GetMoviesDto } from './dto/get-movies-dto';
 import { IGenre } from './interface/IGenre.interface';
 import { buildMovieQuery } from './utils/search.utils';
+
 import {
   checkAndPopulateMovies,
   fetchMoviesFromApi,

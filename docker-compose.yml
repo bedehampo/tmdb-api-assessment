@@ -20,6 +20,8 @@ services:
       - DATABASE_USER=user
       - DATABASE_PASSWORD=password
       - DATABASE_NAME=tmdb_db
+      - TMDB_BASE_URL=https://api.themoviedb.org/3
       - TMDB_API_KEY=316818c2fe4f44ec9b99e4c364ff473b
+      - SECRET_TOKEN=technicalassessmentsecretkey
 volumes:
   mongodata:
