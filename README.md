@@ -152,3 +152,6 @@ The following environment variables are used:
     * **Docker:** In the `docker-compose.yml` file (or through other Docker environment variable mechanisms).
 
 By following this setup, your NestJS application will be able to connect to a MongoDB database correctly, whether it's running on your local machine or within a Docker container.
+
+
+### APIs Documentation - **http://localhost:3000/api**
