@@ -13,7 +13,7 @@ export const buildMovieQuery = (params: ISearchParams): any => {
 
   // Filter by genre
   if (params.genre !== undefined) {
-    query['genres.id'] = params.genre;
+    query.genres = params.genre;
   }
 
   // Filter by year release

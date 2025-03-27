@@ -57,3 +57,15 @@ The app currently responds with a basic endpoint (`GET /`) to verify MongoDB con
 
 - Example: GET `GET /movies?search=interstellar&genre=18&release_year=2014`
 - search (String): Filters movies by title (case-insensitive partial match).
+
+- **Authentication**:
+  - Predefined users are populated on startup if they don’t exist:
+    - `magdy@buen.ro` / `password`
+    - `van@buen.ro` / `password`
+    - `hampoherobede@gmail.com` / `password`
+  - Passwords are hashed with `bcrypt` for security.
+  - JWT tokens are issued via the `/auth/login` endpoint and required for protected routes, secured with `@nestjs/passport` and `passport-jwt`.
+  - **Login Example**:
+  Example: `POST /user/login`, `GET /movies/genre`, `GET /movies/:id` `POST /movies/rate-movie` `GET /movies/rating/:id`
+
+   
