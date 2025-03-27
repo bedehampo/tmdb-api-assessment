@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TmdbService } from './tmdb/tmdb.service';
 import { MoviesModule } from './movies/movies.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MoviesModule } from './movies/movies.module';
       inject: [ConfigService],
     }),
     MoviesModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, TmdbService],

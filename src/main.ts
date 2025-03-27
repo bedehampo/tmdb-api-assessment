@@ -12,6 +12,14 @@ async function bootstrap() {
       'A RESTful API integrating The Movie Database (TMDB) with NestJS and MongoDB',
     )
     .setVersion('0.1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'jwt',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

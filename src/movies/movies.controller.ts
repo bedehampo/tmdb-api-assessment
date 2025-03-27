@@ -1,16 +1,25 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { MoviesService } from './movies.service';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetMoviesDto } from './dto/get-movies-dto';
 import { IGenre } from './interface/IGenre.interface';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('movies')
 @Controller('movies')
+@UseGuards(AuthGuard('jwt'))
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   // Get genre controller
   @Get('/genre')
+  @ApiBearerAuth('jwt')
   @ApiOperation({ summary: 'Get list of genres' })
   @ApiResponse({ status: 200, description: 'List of genres', type: Object })
   async getGenres(): Promise<{ message: string; data: IGenre[] }> {
@@ -19,6 +28,7 @@ export class MoviesController {
 
   // Get movies controller
   @Get()
+  @ApiBearerAuth('jwt')
   @ApiOperation({ summary: 'List movies with pagination and filters' })
   @ApiQuery({
     name: 'page',
