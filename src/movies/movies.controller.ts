@@ -2,12 +2,22 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetMoviesDto } from './dto/get-movies-dto';
+import { IGenre } from './interface/IGenre.interface';
 
 @ApiTags('movies')
 @Controller('movies')
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
+  // Get genre controller
+  @Get('/genre')
+  @ApiOperation({ summary: 'Get list of genres' })
+  @ApiResponse({ status: 200, description: 'List of genres', type: Object })
+  async getGenres(): Promise<{ message: string; data: IGenre[] }> {
+    return this.moviesService.getGenres();
+  }
+
+  // Get movies controller
   @Get()
   @ApiOperation({ summary: 'List movies with pagination and filters' })
   @ApiQuery({

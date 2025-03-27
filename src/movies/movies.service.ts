@@ -5,7 +5,7 @@ import { TmdbService } from 'src/tmdb/tmdb.service';
 import { Model } from 'mongoose';
 import { Genre } from './schema/genre.schema';
 import { GetMoviesDto } from './dto/get-movies-dto';
-import { query } from '../../node_modules/@types/express/index.d';
+import { IGenre } from './interface/IGenre.interface';
 
 @Injectable()
 export class MoviesService implements OnModuleInit {
@@ -87,6 +87,17 @@ export class MoviesService implements OnModuleInit {
   }
 
   // Get Genres
+  async getGenres(): Promise<{ message: string; data: IGenre[] }> {
+    try {
+      const genres = await this.genreModel.find().select('id name');
+      return {
+        message: 'Genres retrieved successfully',
+        data: genres,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 
   // Get movies
   async getMovies(
