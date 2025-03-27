@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TmdbService } from './tmdb/tmdb.service';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
   imports: [
@@ -10,15 +12,17 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: `mongodb://${configService.get('DATABASE_USER')}:${configService.get('DATABASE_PASSWORD')}@${configService.get('DATABASE_HOST')}:${configService.get('DATABASE_PORT')}/admin`,
+        // uri: `mongodb://${configService.get('DATABASE_USER')}:${configService.get('DATABASE_PASSWORD')}@${configService.get('DATABASE_HOST')}:${configService.get('DATABASE_PORT')}/admin`,
+        uri: `mongodb://${configService.get('DATABASE_HOST')}:${configService.get('DATABASE_PORT')}/${configService.get('DATABASE_NAME')}`,
         retryAttempts: 10,
         retryDelay: 1000,
-        dbName: configService.get('DATABASE_NAME'),
+        // dbName: configService.get('DATABASE_NAME'),
       }),
       inject: [ConfigService],
     }),
+    MoviesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TmdbService],
 })
 export class AppModule {}
